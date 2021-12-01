@@ -1,5 +1,7 @@
 package day01
 
+import util.loadInputFromResource
+
 fun main(args: Array<String>) {
     println("Part 1 test ${Day1("test").part1()}")
     println("Part 1 actual ${Day1("input").part1()}")
@@ -9,7 +11,9 @@ fun main(args: Array<String>) {
 
 class Day1(
     inputName: String,
-    val input: List<Int> = Day1::class.java.getResource(inputName).readText().lines().map { it.toInt() }) {
+    private val input: List<Int> = loadInputFromResource<Day1>(inputName).map { it.toInt() }) {
+
+
 
     fun part1() = input.zipWithNext().count { it.second > it.first }
 
