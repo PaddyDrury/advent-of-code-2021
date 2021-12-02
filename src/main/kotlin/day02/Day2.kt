@@ -1,11 +1,22 @@
 package day02
 
 import util.AocDay
-import util.loadInputFromResource
+import util.loadInputFromServer
 
 fun main() {
-    Day2("test").printTheAnswers()
-    Day2("actual").printTheAnswers()
+    Day2(
+        inputLines = """
+        forward 5
+        down 5
+        forward 8
+        up 3
+        down 8
+        forward 2
+    """.trimIndent().lines()
+    ).test(150, 900)
+
+    Day2(inputLines = loadInputFromServer("2021", "2"))
+        .printTheAnswers()
 }
 
 data class SubVector(
@@ -17,8 +28,8 @@ data class SubVector(
 }
 
 class Day2(
-    override val inputName: String,
-    private val input: List<SubVector> = loadInputFromResource<Day2>(inputName).map { it.toSubVector() }
+    inputLines: List<String>,
+    private val input: List<SubVector> = inputLines.map { it.toSubVector() }
 ) : AocDay {
     override fun part1() = input.reduce { acc, subVector -> acc + subVector }.product()
     override fun part2() = input.fold(SubVectorWithAim()) { acc, subVector -> acc.moveBy(subVector) }.vector.product()
