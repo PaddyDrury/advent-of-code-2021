@@ -1,12 +1,11 @@
 package day02
 
+import util.AocDay
 import util.loadInputFromResource
 
 fun main() {
-    println("Part 1 test   ${Day2("test").part1()}")
-    println("Part 1 actual ${Day2("input").part1()}")
-    println("Part 2 test   ${Day2("test").part2()}")
-    println("Part 2 actual ${Day2("input").part2()}")
+    Day2("test").printTheAnswers()
+    Day2("actual").printTheAnswers()
 }
 
 data class SubVector(
@@ -17,18 +16,25 @@ data class SubVector(
     fun product() = x * y
 }
 
+class Day2(
+    override val inputName: String,
+    private val input: List<SubVector> = loadInputFromResource<Day2>(inputName).map { it.toSubVector() }
+) : AocDay {
+    override fun part1() = input.reduce { acc, subVector -> acc + subVector }.product()
+    override fun part2() = input.fold(SubVectorWithAim()) { acc, subVector -> acc.moveBy(subVector) }.subVector.product()
+}
+
 data class SubVectorWithAim(
-    val x: Int = 0,
-    val y: Int = 0,
+    val subVector: SubVector = SubVector(),
     val aim: Int = 0,
 ) {
     fun moveBy(vector: SubVector) = SubVectorWithAim(
-        x = x + vector.x,
-        y = y + (vector.x * aim),
+        subVector = SubVector(
+            x = subVector.x + vector.x,
+            y = subVector.y + (vector.x * aim),
+        ),
         aim = aim + vector.y,
     )
-
-    fun product() = x * y
 }
 
 fun String.toSubVector() = split(' ').let {
@@ -38,12 +44,4 @@ fun String.toSubVector() = split(' ').let {
         "up" -> SubVector(y = 0 - it.last().toInt())
         else -> error("invalid vector")
     }
-}
-
-class Day2(
-    inputName: String,
-    private val input: List<SubVector> = loadInputFromResource<Day2>(inputName).map { it.toSubVector() }
-) {
-    fun part1() = input.reduce { acc, subVector -> acc + subVector }.product()
-    fun part2() = input.fold(SubVectorWithAim()) { acc, subVector -> acc.moveBy(subVector) }.product()
 }
