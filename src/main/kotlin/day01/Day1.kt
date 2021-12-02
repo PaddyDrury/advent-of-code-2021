@@ -2,7 +2,7 @@ package day01
 
 import util.loadInputFromResource
 
-fun main(args: Array<String>) {
+fun main() {
     println("Part 1 test   ${Day1("test").part1()}")
     println("Part 1 actual ${Day1("input").part1()}")
     println("Part 2 test   ${Day1("test").part2()}")
