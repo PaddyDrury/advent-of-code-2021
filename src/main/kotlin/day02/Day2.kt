@@ -21,19 +21,16 @@ class Day2(
     private val input: List<SubVector> = loadInputFromResource<Day2>(inputName).map { it.toSubVector() }
 ) : AocDay {
     override fun part1() = input.reduce { acc, subVector -> acc + subVector }.product()
-    override fun part2() = input.fold(SubVectorWithAim()) { acc, subVector -> acc.moveBy(subVector) }.subVector.product()
+    override fun part2() = input.fold(SubVectorWithAim()) { acc, subVector -> acc.moveBy(subVector) }.vector.product()
 }
 
 data class SubVectorWithAim(
-    val subVector: SubVector = SubVector(),
+    val vector: SubVector = SubVector(),
     val aim: Int = 0,
 ) {
-    fun moveBy(vector: SubVector) = SubVectorWithAim(
-        subVector = SubVector(
-            x = subVector.x + vector.x,
-            y = subVector.y + (vector.x * aim),
-        ),
-        aim = aim + vector.y,
+    fun moveBy(other: SubVector) = SubVectorWithAim(
+        vector = vector + other.copy(y = other.x * aim),
+        aim = aim + other.y,
     )
 }
 
