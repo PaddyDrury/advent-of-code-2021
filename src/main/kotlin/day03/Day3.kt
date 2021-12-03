@@ -18,7 +18,7 @@ fun main() {
             10000
             11001
             00010
-            01010""".trimIndent().trim().also { println(it) }.lines()
+            01010""".trimIndent().lines()
     ).test(198, 230)
 
     Day3(inputLines = loadInputFromServer("2021", "3"))
@@ -34,16 +34,17 @@ class Day3(
         gamma * toEpsilon(gamma)
     }
 
+    // todo - do this in one pass
     override fun part2() = o2GeneratorRating() * co2ScrubberRating()
 
     private fun String.characterCounts() = associate {
-        it to this.count { c -> it == c}
+        it to this.count { c -> it == c }
     }
 
     private fun String.modalCharacterOr(default: Char) = characterCounts().let { counts ->
         when {
             counts.values.maxOrNull().let { max -> counts.values.count { it == max } } > 1 -> default
-            else  -> counts.maxByOrNull { it.value }!!.key
+            else -> counts.maxByOrNull { it.value }!!.key
         }
     }
 
@@ -58,16 +59,21 @@ class Day3(
     private fun toEpsilon(gamma: Int) = gamma xor columns.map { '1' }.fromBinaryString()
 
     private fun o2GeneratorRating() = (columns.indices).fold(inputLines) { rows, idx ->
-        if(rows.size == 1) rows else
-        rows.columns()[idx].modalCharacterOr('1').let { char ->
-            rows.filter { it[idx] == char }
-        }
+        if (rows.size == 1) rows else
+            rows.columns()[idx].modalCharacterOr('1').let { char ->
+                rows.filter { it[idx] == char }
+            }
     }.first().toInt(2)
 
     private fun co2ScrubberRating() = (columns.indices).fold(inputLines) { rows, idx ->
-        if(rows.size == 1) rows else
+        if (rows.size == 1) rows else
             rows.columns()[idx].modalCharacterOr('1').let { char ->
-                rows.filter { it[idx] == when(char) { '1' -> '0' else -> '1'} }
+                rows.filter {
+                    it[idx] == when (char) {
+                        '1' -> '0'
+                        else -> '1'
+                    }
+                }
             }
     }.first().toInt(2)
 }
