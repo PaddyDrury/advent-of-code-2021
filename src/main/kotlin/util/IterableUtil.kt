@@ -8,5 +8,5 @@ fun <T> Iterable<T>.chunkWhen(condition: (T) -> Boolean): List<List<T>> = this.f
     }
     acc
 }.filter {
-    !it.isEmpty()
+    it.isNotEmpty()
 }
