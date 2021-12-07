@@ -29,3 +29,4 @@
 | [Day 3: Binary Diagnostic](https://adventofcode.com/2021/day/3)    | [kotlin](./src/main/kotlin/day03/Day3.kt) |
 | [Day 4: Giant Squid](https://adventofcode.com/2021/day/4)          | [kotlin](./src/main/kotlin/day04/Day4.kt) |
 | [Day 5: Hydrothermal Venture](https://adventofcode.com/2021/day/5) | [kotlin](./src/main/kotlin/day05/Day5.kt) |
+| [Day 6: Lanternfish](https://adventofcode.com/2021/day/6)          | [kotlin](./src/main/kotlin/day06/Day6.kt) |
