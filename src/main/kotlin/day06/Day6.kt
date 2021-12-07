@@ -27,12 +27,12 @@ class Day6(input: String) : AocDay {
 
 data class LanternFishCounts(val counts: Map<Int, Long>) {
     fun nextCounts() = LanternFishCounts(
-        counts.keys.associate {
-            when (it) {
-                0,7 -> 6 to (counts[0] ?: 0) + (counts[7] ?: 0)
-                else -> (it - 1) to counts[it]!!
+        counts.mapKeys {
+            when(it.key) {
+                0 -> 8
+                else -> it.key - 1
             }
-        } + mapOf(8 to (counts[0] ?: 0))
+        } + mapOf(6 to (counts[0] ?: 0) + (counts[7] ?: 0))
     )
 
     fun total() = counts.values.sum()
