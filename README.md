@@ -31,3 +31,4 @@
 | [Day 5: Hydrothermal Venture](https://adventofcode.com/2021/day/5)    | [kotlin](./src/main/kotlin/day05/Day5.kt) |
 | [Day 6: Lanternfish](https://adventofcode.com/2021/day/6)             | [kotlin](./src/main/kotlin/day06/Day6.kt) |
  | [Day 7: The Treachery of Whales](https://adventofcode.com/2021/day/7) | [kotlin](./src/main/kotlin/day07/Day7.kt) |
+ | [Day 8: Seven Segment Search](https://adventofcode.com/2021/day/8)    | [kotlin](./src/main/kotlin/day08/Day8.kt) |
