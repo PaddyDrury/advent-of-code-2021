@@ -42,3 +42,4 @@ typealias Grid<T> = List<List<T>>
 fun <T> Grid<T>.toColumns() = this.first().indices.map { idx ->
     this.map { it[idx] }
 }
+

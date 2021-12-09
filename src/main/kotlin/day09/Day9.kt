@@ -24,43 +24,40 @@ class Day9(input: List<String>) : AocDay {
 
     override fun part2() = heightMap.basins().sortedByDescending {
         it.size
-    }.take(3).fold(1L) { acc, coords ->
-        acc * coords.size
-    }
+    }.take(3).map {
+        it.size
+    }.reduce { a, b -> a * b }
 }
 
-data class Coord(val xPos: Int, val yPos: Int) {
-    private fun surroundingCoords() = (xPos - 1..xPos + 1).flatMap { x ->
-        (yPos - 1..yPos + 1).map { y ->
-            Coord(x, y)
-        }
-    }.filterNot { it == this }.toSet()
-
-    fun adjacentCoords() = surroundingCoords().filterNot {
-        it.xPos != xPos && it.yPos != yPos
-    }
+data class Coord(val x: Int, val y: Int) {
+    fun adjacentCoords() = listOf(
+        Coord(x - 1, y),
+        Coord(x + 1, y),
+        Coord(x, y - 1),
+        Coord(x, y + 1),
+    )
 }
 
 data class HeightMap(
-    val map: List<List<Int>>,
-    val allCoords: Set<Coord> = (0 until map.first().size).flatMap { x ->
-        (map.indices).map { y ->
-            Coord(x, y)
-        }
-    }.toSet()
+    private val map: List<List<Int>>,
 ) {
-
     fun lowValues() = lowPoints().map { valueAt(it) }
 
-    private fun lowPoints() = allCoords.filter { currPos ->
+    private fun lowPoints() = map.first().indices.flatMap { x ->
+        map.indices.map { y ->
+            Coord(x, y)
+        }
+    }.filter { currPos ->
         valueAt(currPos).let { currVal ->
             currPos.adjacentCoords().filter {
-                it in allCoords
+                it in this
             }.all {
                 valueAt(it) > currVal
             }
         }
     }
+
+    operator fun contains(coord: Coord) = coord.x in map.first().indices && coord.y in map.indices
 
     fun basins() = lowPoints().map { pointsDrainingTo(it) }
 
@@ -69,7 +66,7 @@ data class HeightMap(
             coord.adjacentCoords().filterNot {
                 it in visited
             }.filter {
-                it in allCoords
+                it in this
             }.let { newAdjacentCoords ->
                 newAdjacentCoords.filter {
                     valueAt(it) in (currVal + 1) until 9
@@ -79,5 +76,5 @@ data class HeightMap(
             }
         }.toSet() + coord
 
-    private fun valueAt(coord: Coord) = map[coord.yPos][coord.xPos]
+    private fun valueAt(coord: Coord) = map[coord.y][coord.x]
 }
