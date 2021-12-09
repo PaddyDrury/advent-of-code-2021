@@ -32,3 +32,4 @@
 | [Day 6: Lanternfish](https://adventofcode.com/2021/day/6)             | [kotlin](./src/main/kotlin/day06/Day6.kt) |
  | [Day 7: The Treachery of Whales](https://adventofcode.com/2021/day/7) | [kotlin](./src/main/kotlin/day07/Day7.kt) |
  | [Day 8: Seven Segment Search](https://adventofcode.com/2021/day/8)    | [kotlin](./src/main/kotlin/day08/Day8.kt) |
+| [Day 9: Smoke Basin](https://adventofcode.com/2021/day/9)             | [kotlin](./src/main/kotlin/day09/Day9.kt) |

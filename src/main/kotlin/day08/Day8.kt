@@ -52,8 +52,8 @@ class Day8(inputLines: List<String>) : AocDay {
         }
 }
 
-    fun <T> MutableList<T>.findAndRemove(predicate: (T) -> Boolean): T = first(predicate).also { remove(it) }
+fun <T> MutableList<T>.findAndRemove(predicate: (T) -> Boolean): T = first(predicate).also { remove(it) }
 
-    fun String.toDigits() = split(" ").map { it.toDigit() }
+fun String.toDigits() = split(" ").map { it.toDigit() }
 
-    fun String.toDigit() = toCharArray().toSet()
+fun String.toDigit() = toCharArray().toSet()
