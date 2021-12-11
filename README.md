@@ -34,3 +34,4 @@
 | [Day 8: Seven Segment Search](https://adventofcode.com/2021/day/8)    | [kotlin](./src/main/kotlin/day08/Day8.kt)  |
 | [Day 9: Smoke Basin](https://adventofcode.com/2021/day/9)             | [kotlin](./src/main/kotlin/day09/Day9.kt)  |
 | [Day 10: Syntax Scoring](https://adventofcode.com/2021/day/10)        | [kotlin](./src/main/kotlin/day10/Day10.kt) |
+| [Day 11: Dumbo Octopus](https://adventofcode.com/2021/day/11)         | [kotlin](./src/main/kotlin/day11/Day11.kt) |
