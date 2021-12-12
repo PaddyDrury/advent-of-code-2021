@@ -35,3 +35,4 @@
 | [Day 9: Smoke Basin](https://adventofcode.com/2021/day/9)             | [kotlin](./src/main/kotlin/day09/Day9.kt)  |
 | [Day 10: Syntax Scoring](https://adventofcode.com/2021/day/10)        | [kotlin](./src/main/kotlin/day10/Day10.kt) |
 | [Day 11: Dumbo Octopus](https://adventofcode.com/2021/day/11)         | [kotlin](./src/main/kotlin/day11/Day11.kt) |
+ | [Day 12: Passage Pathing](https://adventofcode.com/2021/day/12)       | [kotlin](./src/main/kotlin/day12/Day12.kt) |
