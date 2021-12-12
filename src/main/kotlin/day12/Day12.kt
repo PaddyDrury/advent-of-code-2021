@@ -2,7 +2,8 @@ package day12
 
 import util.AocDay
 import util.loadInputFromServer
-import java.util.*
+import java.util.Locale.getDefault
+
 
 fun main() {
     Day12(loadInputFromServer("2021", "12")).printTheAnswers()
@@ -18,7 +19,7 @@ class Day12(inputLines: List<String>) : AocDay {
         currentPath = Path(listOf("start"))
     ).size
 
-    override fun part2()= caveSystem.paths(
+    override fun part2() = caveSystem.paths(
         currentCave = "start",
         destinationCave = "end",
         currentPath = Path(listOf("start")),
@@ -30,10 +31,12 @@ class CaveSystem(cavePairs: List<Pair<String, String>>) {
     private val connections = (cavePairs + cavePairs.map { it.second to it.first }).groupBy { it.first }
         .mapValues { it.value.map { v -> v.second } }
 
-    fun paths(currentCave: String,
-              destinationCave: String,
-              currentPath: Path,
-              inAHurry: Boolean = true): List<Path> =
+    fun paths(
+        currentCave: String,
+        destinationCave: String,
+        currentPath: Path,
+        inAHurry: Boolean = true
+    ): List<Path> =
         when (currentCave) {
             destinationCave -> listOf(currentPath)
             else -> connections[currentCave]!!.filter { currentPath.canGoTo(it, inAHurry) }
@@ -42,7 +45,7 @@ class CaveSystem(cavePairs: List<Pair<String, String>>) {
 
 }
 
-fun String.isLowerCase() = lowercase(Locale.getDefault()) == this
+fun String.isLowerCase() = lowercase(getDefault()) == this
 
 
 data class Path(val caves: List<String>) {
@@ -53,5 +56,6 @@ data class Path(val caves: List<String>) {
 
     operator fun plus(cave: String) = Path(caves + cave)
 
-    private fun anySmallCavesVisitedTwice() = caves.filter { it.isLowerCase() }.groupingBy { it }.eachCount().values.any { it > 1 }
+    private fun anySmallCavesVisitedTwice() =
+        caves.filter { it.isLowerCase() }.groupingBy { it }.eachCount().values.any { it > 1 }
 }
