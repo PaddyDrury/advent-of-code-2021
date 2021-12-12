@@ -52,7 +52,7 @@ fun EnergyGrid.allFlashed() = allCoords().all { flashedAt(it) }
 
 fun EnergyGrid.flashedAt(coord: Coord) = valueAt(coord) == 0
 
-fun EnergyGrid.anyDueToFlash() = allCoords().any { dueToFlashAt(it) }
+fun EnergyGrid.dueToFlash() = allCoords().filter { dueToFlashAt(it) }
 
 fun EnergyGrid.dueToFlashAt(coord: Coord) = valueAt(coord) > 9
 
@@ -72,13 +72,8 @@ fun EnergyGrid.flashAt(coord: Coord) = reset(coord).also {
     }
 }
 
-fun EnergyGrid.nextLevels() = copyAndIncrement().let { it ->
-    while (it.anyDueToFlash()) {
-        it.allCoords().forEach { pos ->
-            if (it.dueToFlashAt(pos)) {
-                it.flashAt(pos)
-            }
-        }
+fun EnergyGrid.nextLevels() = copyAndIncrement().also {
+    while (it.dueToFlash().onEach { c -> it.flashAt(c) }.isNotEmpty()) {
+
     }
-    it
 }
