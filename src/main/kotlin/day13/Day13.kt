@@ -27,7 +27,7 @@ class Day13(inputLines: List<String>) : AocDay {
     override fun part1() = foldInstructions.first().let { coords.foldAccordingTo(it) }.distinct().size
 
     override fun part2() = foldInstructions.fold(coords) { acc, instruction ->
-        acc.foldAccordingTo(instruction)
+        acc.foldAccordingTo(instruction).distinct()
     }.toPrintable().let { "\n$it\n" }
 }
 
