@@ -28,7 +28,7 @@ class Day13(inputLines: List<String>) : AocDay {
 
     override fun part2() = foldInstructions.fold(coords) { acc, instruction ->
         acc.foldAccordingTo(instruction)
-    }.toPrintable()
+    }.toPrintable().let { "\n$it\n" }
 }
 
 data class Coord(val x: Int, val y: Int) {
@@ -43,13 +43,8 @@ fun List<Coord>.foldAccordingTo(instruction: Pair<String, Int>) = map {
     }
 }
 
-fun List<Coord>.toPrintable() = "\n" + (0..maxOf { it.y }).map { y ->
+fun List<Coord>.toPrintable() = (0..maxOf { it.y }).map { y ->
     (0..maxOf { it.x }).joinToString("") { x ->
-        if (any {
-                it == Coord(
-                    x,
-                    y
-                )
-            }) "#" else " "
+        if (any { it == Coord(x, y) }) "#" else " "
     }
-}.joinToString("\n") + "\n"
+}.joinToString("\n")

@@ -4,6 +4,7 @@ import util.AocDay
 import util.loadInputFromServer
 import java.util.Locale.getDefault
 
+typealias Path = List<String>
 
 fun main() {
     Day12(loadInputFromServer("2021", "12")).printTheAnswers()
@@ -14,16 +15,15 @@ class Day12(inputLines: List<String>) : AocDay {
     private val caveSystem = inputLines.map { it.split("-") }.map { it.first() to it.last() }.let { CaveSystem(it) }
 
     override fun part1() = caveSystem.paths(
-        currentCave = "start",
         destinationCave = "end",
-        currentPath = Path(listOf("start"))
+        currentPath = listOf("start"),
+        cavePredicate = { path, cave -> !cave.isSmallCave() || cave !in path }
     ).size
 
     override fun part2() = caveSystem.paths(
-        currentCave = "start",
         destinationCave = "end",
-        currentPath = Path(listOf("start")),
-        inAHurry = false
+        currentPath = listOf("start"),
+        cavePredicate = { path, cave -> !cave.isSmallCave() || cave !in path || (cave != "start" && path.allSmallCavesVisitedNoMoreThanOnce()) }
     ).size
 }
 
@@ -32,30 +32,19 @@ class CaveSystem(cavePairs: List<Pair<String, String>>) {
         .mapValues { it.value.map { v -> v.second } }
 
     fun paths(
-        currentCave: String,
         destinationCave: String,
         currentPath: Path,
-        inAHurry: Boolean = true
+        cavePredicate: (Path, String) -> Boolean
     ): List<Path> =
-        when (currentCave) {
+        when (currentPath.last()) {
             destinationCave -> listOf(currentPath)
-            else -> connections[currentCave]!!.filter { currentPath.canGoTo(it, inAHurry) }
-                .flatMap { paths(it, destinationCave, currentPath + it, inAHurry) }
+            else -> connections[currentPath.last()]!!.filter { cavePredicate.invoke(currentPath, it) }
+                .flatMap { paths(destinationCave, currentPath + it, cavePredicate) }
         }
 
 }
 
-fun String.isLowerCase() = lowercase(getDefault()) == this
+fun String.isSmallCave() = lowercase(getDefault()) == this
 
-
-data class Path(val caves: List<String>) {
-    fun canGoTo(cave: String, inAHurry: Boolean) = !cave.isLowerCase() || when {
-        inAHurry || cave == "start" || anySmallCavesVisitedTwice() -> cave !in caves
-        else -> true
-    }
-
-    operator fun plus(cave: String) = Path(caves + cave)
-
-    private fun anySmallCavesVisitedTwice() =
-        caves.filter { it.isLowerCase() }.groupingBy { it }.eachCount().values.any { it > 1 }
-}
+fun Path.allSmallCavesVisitedNoMoreThanOnce() =
+    filter { it.isSmallCave() }.groupingBy { it }.eachCount().values.all { it < 2 }
