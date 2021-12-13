@@ -14,14 +14,14 @@ class Day12(inputLines: List<String>) : AocDay {
 
     override fun part1() = caveSystem.paths(
         destinationCave = "end",
-        currentPath = listOf("start"),
+        path = listOf("start"),
         visitableFilter = { path, cave -> !cave.isSmallCave() || cave !in path }
     ).size
 
     override fun part2() = caveSystem.paths(
         destinationCave = "end",
-        currentPath = listOf("start"),
-        visitableFilter = { path, cave -> !cave.isSmallCave() || cave !in path || (cave != "start" && path.allSmallCavesVisitedNoMoreThanOnce()) }
+        path = listOf("start"),
+        visitableFilter = { path, cave -> !cave.isSmallCave() || cave !in path || (cave != "start" && path.noDuplicateSmallCaves()) }
     ).size
 }
 
@@ -31,18 +31,18 @@ class CaveSystem(cavePairs: List<Pair<String, String>>) {
 
     fun paths(
         destinationCave: String,
-        currentPath: Path,
+        path: Path,
         visitableFilter: (Path, String) -> Boolean
     ): List<Path> =
-        when (currentPath.last()) {
-            destinationCave -> listOf(currentPath)
-            else -> connections[currentPath.last()]!!.filter { visitableFilter.invoke(currentPath, it) }
-                .flatMap { paths(destinationCave, currentPath + it, visitableFilter) }
+        when (path.last()) {
+            destinationCave -> listOf(path)
+            else -> connections[path.last()]!!.filter { visitableFilter.invoke(path, it) }
+                .flatMap { paths(destinationCave, path + it, visitableFilter) }
         }
 
 }
 
 fun String.isSmallCave() = this.all { it.isLowerCase() }
 
-fun Path.allSmallCavesVisitedNoMoreThanOnce() =
+fun Path.noDuplicateSmallCaves() =
     filter { it.isSmallCave() }.groupingBy { it }.eachCount().values.all { it < 2 }
