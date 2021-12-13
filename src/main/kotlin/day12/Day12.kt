@@ -2,14 +2,12 @@ package day12
 
 import util.AocDay
 import util.loadInputFromServer
-import java.util.Locale.getDefault
 
 typealias Path = List<String>
 
 fun main() {
     Day12(loadInputFromServer("2021", "12")).printTheAnswers()
 }
-
 
 class Day12(inputLines: List<String>) : AocDay {
     private val caveSystem = inputLines.map { it.split("-") }.map { it.first() to it.last() }.let { CaveSystem(it) }
@@ -44,7 +42,7 @@ class CaveSystem(cavePairs: List<Pair<String, String>>) {
 
 }
 
-fun String.isSmallCave() = lowercase(getDefault()) == this
+fun String.isSmallCave() = this.all { it.isLowerCase() }
 
 fun Path.allSmallCavesVisitedNoMoreThanOnce() =
     filter { it.isSmallCave() }.groupingBy { it }.eachCount().values.all { it < 2 }
