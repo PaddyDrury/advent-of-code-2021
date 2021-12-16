@@ -95,15 +95,17 @@ data class OperatorPacket(
         get() = headerLength + subPackets.sumOf { it.length }
 
     override val value: Long
-        get() = when (typeId) {
-            0 -> subPackets.sumOf { it.value }
-            1 -> subPackets.map { it.value }.reduce { a, b -> a * b }
-            2 -> subPackets.minOf { it.value }
-            3 -> subPackets.maxOf { it.value }
-            5 -> subPackets.map { it.value }.let { if (it.first() > it.last()) 1 else 0 }
-            6 -> subPackets.map { it.value }.let { if (it.first() < it.last()) 1 else 0 }
-            7 -> subPackets.map { it.value }.let { if (it.first() == it.last()) 1 else 0 }
-            else -> error("Invalid type ID $typeId")
+        get() = subPackets.map { it.value }.let { values ->
+            when (typeId) {
+                0 -> values.sum()
+                1 -> values.reduce { a, b -> a * b }
+                2 -> values.minOrNull()!!
+                3 -> values.maxOrNull()!!
+                5 -> if (values.first() > values.last()) 1 else 0
+                6 -> if (values.first() < values.last()) 1 else 0
+                7 -> if (values.first() == values.last()) 1 else 0
+                else -> error("Invalid type ID $typeId")
+            }
         }
 
     override fun sumOfAllVersions(): Int = version + subPackets.sumOf { it.sumOfAllVersions() }
@@ -111,18 +113,22 @@ data class OperatorPacket(
     companion object {
         fun parseOperatorPacket(packetBinary: String) = packetBinary.drop(6).take(1).let { lengthType ->
             when (lengthType) {
-                "0" -> OperatorPacket(
-                    version = packetBinary.packetVersion(),
-                    typeId = packetBinary.packetType(),
-                    headerLength = 6 + 1 + 15,
-                    subPackets = parseAll(packetBinary.drop(6 + 1 + 15).take(packetBinary.subPacketsLength()))
-                )
-                else -> OperatorPacket(
-                    version = packetBinary.packetVersion(),
-                    typeId = packetBinary.packetType(),
-                    headerLength = 6 + 1 + 11,
-                    subPackets = parseMany(packetBinary.drop(6 + 1 + 11), packetBinary.subPacketsCount())
-                )
+                "0" -> (6 + 1 + 5).let { headerLength ->
+                    OperatorPacket(
+                        version = packetBinary.packetVersion(),
+                        typeId = packetBinary.packetType(),
+                        headerLength = headerLength,
+                        subPackets = parseAll(packetBinary.drop(headerLength).take(packetBinary.subPacketsLength()))
+                    )
+                }
+                else -> (6 + 1 + 11).let { headerLength ->
+                    OperatorPacket(
+                        version = packetBinary.packetVersion(),
+                        typeId = packetBinary.packetType(),
+                        headerLength = headerLength,
+                        subPackets = parseMany(packetBinary.drop(headerLength), packetBinary.subPacketsCount())
+                    )
+                }
             }
         }
     }
