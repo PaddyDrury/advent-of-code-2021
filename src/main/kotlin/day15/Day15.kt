@@ -38,12 +38,12 @@ class Day15(inputLines: List<String>) : AocDay {
             acc.appendBelow(it)
         }
 
-    override fun part1() = aStarSearchShortestPathScore(riskLevelMap, Coord(0, 0), riskLevelMap.bottomRight())
+    override fun part1() = aStarSearchLowestRiskPathScore(riskLevelMap, Coord(0, 0), riskLevelMap.bottomRight())
 
     override fun part2() =
-        generateBigMap(riskLevelMap).let { map -> aStarSearchShortestPathScore(map, Coord(0, 0), map.bottomRight()) }
+        generateBigMap(riskLevelMap).let { map -> aStarSearchLowestRiskPathScore(map, Coord(0, 0), map.bottomRight()) }
 
-    private fun aStarSearchShortestPathScore(entryRiskMap: Grid, start: Coord, end: Coord): Int {
+    private fun aStarSearchLowestRiskPathScore(entryRiskMap: Grid, start: Coord, end: Coord): Int {
         // map of lowest total risk score from start
         val lowestRiskFromStartMap = Array(entryRiskMap.size) { Array(entryRiskMap[0].size) { Int.MAX_VALUE } }.also {
             it.setAt(start, 0)
@@ -81,7 +81,7 @@ class Day15(inputLines: List<String>) : AocDay {
             }
         }
 
-        // after processing we should have a map of lowest possible risk score for travelling to that location from the start, so the score at the end is the total risk
+        // after processing we should have a map of lowest possible risk score for travelling to that location from the start, so the score at the end is the lowest total risk to get there
         return lowestRiskFromStartMap.valueAt(end)
     }
 }
