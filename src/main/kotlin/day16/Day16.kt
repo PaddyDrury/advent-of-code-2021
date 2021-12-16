@@ -4,9 +4,9 @@ package day16
 import day16.LiteralPacket.Companion.isLiteralPacket
 import day16.LiteralPacket.Companion.parseLiteralPacket
 import day16.OperatorPacket.Companion.parseOperatorPacket
-import day16.Packet.Companion.parsePacket
 import day16.Packet.Companion.parseAll
 import day16.Packet.Companion.parseMany
+import day16.Packet.Companion.parsePacket
 import util.AocDay
 import util.loadInputFromServer
 
@@ -39,9 +39,12 @@ interface Packet {
         fun parsePacket(packetBinary: String) =
             if (isLiteralPacket(packetBinary)) parseLiteralPacket(packetBinary) else parseOperatorPacket(packetBinary)
 
+        private fun parseAndSeekNext(packetBinary: String) =
+            parsePacket(packetBinary).let { packet -> packet to packetBinary.drop(packet.length) }
+
         private fun packetSequence(packetBinary: String): Sequence<Packet> =
-            generateSequence(parsePacket(packetBinary).let { packet -> packet to packetBinary.drop(packet.length) }) { (_, remaining) ->
-                if (remaining.isNotBlank()) parsePacket(remaining).let { packet -> packet to remaining.drop(packet.length) } else null
+            generateSequence(parseAndSeekNext(packetBinary)) { (_, remaining) ->
+                if (remaining.isNotBlank()) parseAndSeekNext(remaining) else null
             }.map {
                 it.first
             }
