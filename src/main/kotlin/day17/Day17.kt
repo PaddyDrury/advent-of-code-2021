@@ -2,6 +2,7 @@ package day17
 
 import util.AocDay
 import util.loadInputFromServer
+import kotlin.math.abs
 
 fun main() {
     Day17(loadInputFromServer("2021", "17").first()).printTheAnswers()
@@ -40,7 +41,7 @@ class Day17(input: String) : AocDay {
     }
 
     // not too happy with this but brute force it
-    private val allHittingPaths = (500 downTo targetArea.yRange.first).flatMap { y ->
+    private val allHittingPaths = (abs(targetArea.yRange.first) downTo targetArea.yRange.first).flatMap { y ->
         (0..targetArea.xRange.last).map { x ->
             coordSequence(Velocity(x, y)).toList()
         }
