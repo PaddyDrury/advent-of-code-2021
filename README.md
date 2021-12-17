@@ -40,3 +40,4 @@
 | [Day 14: Extended Polymerization](https://adventofcode.com/2021/day/14) | [kotlin](./src/main/kotlin/day14/Day14.kt) |
 | [Day 15: Chiton](https://adventofcode.com/2021/day/15)                  | [kotlin](./src/main/kotlin/day15/Day15.kt) |
 | [Day 16: Packet Decoder](https://adventofcode.com/2021/day/16)          | [kotlin](./src/main/kotlin/day16/Day16.kt) |
+| [Day 17: Trick Shot](https://adventofcode.com/2021/day/17)              | [kotlin](./src/main/kotlin/day17/Day17.kt) |
